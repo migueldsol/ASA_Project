@@ -22,10 +22,20 @@ vector<int> getLineValues(int lines){
     return newVector;
 }
 
-int verifica_quadrado(vector<int> lineValues, int lines){
+int lastMaxIndex(vector<int> object,int size){
+    auto max = max_element(object.begin(), object.end());
+    for (int i = size-1; i >= 0; i--){
+        if (object[i] == *max){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int verifica_quadrado(vector<int> lineValues, int lines, int indexMaxValue){
     int count = 1;
-    int temp = lineValues[lines - 1];
-    for(int i = lines - 2; i>= 0; i--){
+    int temp = lineValues[indexMaxValue];
+    for(int i = indexMaxValue; i> 0 && count < temp; i--){
         if (lineValues[i] < temp){
             break;
         }
@@ -34,35 +44,46 @@ int verifica_quadrado(vector<int> lineValues, int lines){
     return count;
 }
 
-vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado){
+vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado, int indexMaxValue){
     if(quadrado == 1){
-        
-        auto max = max_element(lineValues.begin(), lineValues.end());
-
-        for (int i = lines-1; i >= 0; i--){
-            if (lineValues[i] == *max){
+        int max = lineValues[indexMaxValue];
+        for (int i = indexMaxValue; i >= 0; i--){
+            if (lineValues[i] == max){
                 lineValues[i] -= 1;
                 break;
             }
         }
     }
     else{
-        for (int i = lines-1; i >= lines - quadrado; i--){
+        for (int i = indexMaxValue; i >= indexMaxValue- quadrado + 1; i--){
             lineValues[i]-=quadrado;
         }
     }
     return lineValues;
 }
 int verifica_fim(vector <int> lineValues, int lines){
-    if (lineValues[0] == 0){
+    int count = 0;
+    for (int i = 0; i < lines; i++){
+        if (lineValues[i] == 0){
+            count++;
+        }
+        else{
+            break;
+        }
+    }
+    if (count == lines){
         return 1;
     }
-    else{
-        return 0;
-    }
+    return 0;
 }
-int calcula_combinacoes(vector<int> lineValues, int lines){
-    int quadrado = verifica_quadrado(lineValues, lines);
+/*
+int calcula_combinacoes(vector <int> lineValues, int lines){
+    auto max = max_element(lineValues.begin(), lineValues.end());
+    return calcula_combinacoes(lineValues, lines, *max);
+}
+*/
+int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
+    int quadrado = verifica_quadrado(lineValues, lines, indexMaxValue);
     int sum = 0;
     for(int i = 1; i <= quadrado; i++){
         vector <int> newLineValues;
@@ -71,17 +92,17 @@ int calcula_combinacoes(vector<int> lineValues, int lines){
             return 1;
         }
         else{
-            newLineValues = retira_quadrado(newLineValues, lines,i);
-            sum += calcula_combinacoes(newLineValues, lines);
+            newLineValues = retira_quadrado(newLineValues, lines,i, indexMaxValue);
+            sum += calcula_combinacoes(newLineValues, lines, lastMaxIndex(newLineValues,lines));
         }
     }
-    return quadrado;
+    return sum;
 }
 
 int main(){
     int lines = getValue();
     int collums = getValue();
     vector<int> lineValues = getLineValues(lines);
-    printf("%d : %d, combinações = %d",verifica_quadrado(lineValues,lines),collums, calcula_combinacoes(lineValues,lines));
+    printf("%d, combinações = %d",collums, calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
     return 0;
 }
