@@ -35,7 +35,7 @@ int lastMaxIndex(vector<int> object,int size){
 int verifica_quadrado(vector<int> lineValues, int lines, int indexMaxValue){
     int count = 1;
     int temp = lineValues[indexMaxValue];
-    for(int i = indexMaxValue; i> 0 && count < temp; i--){
+    for(int i = indexMaxValue - 1; i>= 0 && count < temp; i--){
         if (lineValues[i] < temp){
             break;
         }
@@ -46,13 +46,7 @@ int verifica_quadrado(vector<int> lineValues, int lines, int indexMaxValue){
 
 vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado, int indexMaxValue){
     if(quadrado == 1){
-        int max = lineValues[indexMaxValue];
-        for (int i = indexMaxValue; i >= 0; i--){
-            if (lineValues[i] == max){
-                lineValues[i] -= 1;
-                break;
-            }
-        }
+        lineValues[indexMaxValue]--;
     }
     else{
         for (int i = indexMaxValue; i >= indexMaxValue- quadrado + 1; i--){
@@ -103,6 +97,6 @@ int main(){
     int lines = getValue();
     int collums = getValue();
     vector<int> lineValues = getLineValues(lines);
-    printf("%d, combinações = %d",collums, calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
+    printf("%d, combinações = %d\n",collums, calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
     return 0;
 }
