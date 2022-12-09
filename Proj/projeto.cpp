@@ -36,8 +36,15 @@ int verifica_quadrado(vector<int> lineValues, int lines){
 
 vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado){
     if(quadrado == 1){
-        auto index = distance(lineValues.begin(), max_element(lineValues.begin(), lineValues.end()));
-        lineValues[index] -= 1;
+        
+        auto max = max_element(lineValues.begin(), lineValues.end());
+
+        for (int i = lines-1; i >= 0; i--){
+            if (lineValues[i] == *max){
+                lineValues[i] -= 1;
+                break;
+            }
+        }
     }
     else{
         for (int i = lines-1; i >= lines - quadrado; i--){
@@ -57,14 +64,14 @@ int verifica_fim(vector <int> lineValues, int lines){
 int calcula_combinacoes(vector<int> lineValues, int lines){
     int quadrado = verifica_quadrado(lineValues, lines);
     int sum = 0;
-    for(int i = 0; i < quadrado; i++){
+    for(int i = 1; i <= quadrado; i++){
         vector <int> newLineValues;
         newLineValues.assign(lineValues.begin(),lineValues.end());
         if (verifica_fim(newLineValues,lines) == 1){
             return 1;
         }
         else{
-            newLineValues = retira_quadrado(newLineValues, lines, quadrado);
+            newLineValues = retira_quadrado(newLineValues, lines,i);
             sum += calcula_combinacoes(newLineValues, lines);
         }
     }
