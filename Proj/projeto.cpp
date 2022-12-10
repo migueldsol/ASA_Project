@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <map>
 using namespace std;
 
 unordered_map<unsigned long int,unsigned long int> hash_table;
@@ -25,7 +26,7 @@ int hashFunction(vector<int> vec) {
     // multiplied by a prime number
     int size = vec.size();
     for (int i = size-1; i >= 0; i--){
-        hash = hash * 10 + vec[i];
+        hash += hash * 10 + vec[i];
     }
     return hash;
 }
@@ -35,13 +36,7 @@ vector<int> getLineValues(int lines,int collums){
     for (int counter = 0;counter < lines; counter++){
         int value;
         cin >> value;
-        if (value < collums){
-            newVector.push_back(value);
-        }
-        else {
-            printf("error: value bigger than collums, exiting\n");
-            exit(1);
-        }
+        newVector.push_back(value);
     }
     return newVector;
 }
@@ -122,11 +117,22 @@ unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int ind
     return sum;
 }
 
-int main(){
+unsigned long int gere_combinacoes(){
     int lines = getValue();
     int collums = getValue();
+    unsigned long int sum = 0;
     vector<int> lineValues = getLineValues(lines,collums);
     hash_table.insert({0,1});
-    printf("%ld\n",calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
+    if (*max_element(lineValues.begin(),lineValues.end()) == 0){
+        return sum;
+    }
+    else{
+        sum = calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines));
+    }
+    return sum;
+}
+
+int main(){
+    printf("%ld\n",gere_combinacoes());
     return 0;
 }
