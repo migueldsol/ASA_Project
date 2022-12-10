@@ -6,6 +6,8 @@
 #include <unordered_map>
 using namespace std;
 
+unordered_map<unsigned long int,unsigned long int> hash_table;
+
 int getValue(){
     int lines;
     cin >> lines;
@@ -17,25 +19,29 @@ int getValue(){
 // and returns an integer as the hash value
 int hashFunction(vector<int> vec) {
     // Initialize the hash value to be zero
-    int hash = 0;
+    unsigned long int hash = 0;
     
     // Iterate over the vector and add each element to the hash value
     // multiplied by a prime number
     int size = vec.size();
-    for (int i = 0; i < size; i++){
-        hash += vec.at(i)*11;
+    for (int i = size-1; i >= 0; i--){
+        hash = hash * 10 + vec[i];
     }
-    
-    // Return the final hash value
-    return hash%11;
+    return hash;
 }
 
-vector<int> getLineValues(int lines){
+vector<int> getLineValues(int lines,int collums){
     vector<int> newVector;
     for (int counter = 0;counter < lines; counter++){
         int value;
         cin >> value;
-        newVector.push_back(value);
+        if (value < collums){
+            newVector.push_back(value);
+        }
+        else {
+            printf("error: value bigger than collums, exiting\n");
+            exit(1);
+        }
     }
     return newVector;
 }
@@ -97,31 +103,30 @@ int calcula_combinacoes(vector <int> lineValues, int lines){
     return calcula_combinacoes(lineValues, lines, *max);
 }
 */
-int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
+unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
     int quadrado = verifica_quadrado(lineValues, lines, indexMaxValue);
-    int sum = 0;
-    int hash_value = hashFunction(lineValues);
-    unordered_map<int,int> hash_table;
-    hash_table[0] = 1;
+    unsigned long int sum = 0;
+    unsigned long int hash_value = hashFunction(lineValues);
     vector <int> newLineValues;
     for(int i = 1; i <= quadrado; i++){
         newLineValues.assign(lineValues.begin(),lineValues.end());
-        if (verifica_fim(newLineValues,lines,hash_table,hash_value) == 1){
-            return hash_table[hashFunction(newLineValues)];
+        if (hash_table.count(hash_value)){
+            return hash_table.at(hash_value);
         }
         else{
             newLineValues = retira_quadrado(newLineValues, lines,i, indexMaxValue);
             sum += calcula_combinacoes(newLineValues, lines, lastMaxIndex(newLineValues,lines));
         }
     }
-    hash_table[hash_value] = sum;
+    hash_table.insert({hash_value,sum});
     return sum;
 }
 
 int main(){
     int lines = getValue();
     int collums = getValue();
-    vector<int> lineValues = getLineValues(lines);
-    printf("%d, combinações = %d\n",collums, calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
+    vector<int> lineValues = getLineValues(lines,collums);
+    hash_table.insert({0,1});
+    printf("%ld\n",calcula_combinacoes(lineValues,lines,lastMaxIndex(lineValues,lines)));
     return 0;
 }
