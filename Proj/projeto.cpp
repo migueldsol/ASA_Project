@@ -7,7 +7,7 @@
 #include <map>
 using namespace std;
 
-unordered_map<unsigned long int,unsigned long int> hash_table;
+unordered_map<string ,unsigned long int> hash_table;
 
 int getValue(){
     int lines;
@@ -18,15 +18,15 @@ int getValue(){
 
 // Define a function that takes in a vector of integers as input
 // and returns an integer as the hash value
-int hashFunction(vector<int> vec) {
+string hashFunction(vector<int> vec) {
     // Initialize the hash value to be zero
-    unsigned long int hash = 0;
+    string hash;
     
     // Iterate over the vector and add each element to the hash value
     // multiplied by a prime number
     int size = vec.size();
     for (int i = size-1; i >= 0; i--){
-        hash += hash * 10 + vec[i];
+        hash += to_string(vec[i]);
     }
     return hash;
 }
@@ -101,7 +101,7 @@ int calcula_combinacoes(vector <int> lineValues, int lines){
 unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
     int quadrado = verifica_quadrado(lineValues, lines, indexMaxValue);
     unsigned long int sum = 0;
-    unsigned long int hash_value = hashFunction(lineValues);
+    string hash_value = hashFunction(lineValues);
     vector <int> newLineValues;
     for(int i = 1; i <= quadrado; i++){
         newLineValues.assign(lineValues.begin(),lineValues.end());
@@ -122,7 +122,11 @@ unsigned long int gere_combinacoes(){
     int collums = getValue();
     unsigned long int sum = 0;
     vector<int> lineValues = getLineValues(lines,collums);
-    hash_table.insert({0,1});
+    string zero;
+    for (int i = 0; i < lines; i++){
+        zero += "0";
+    }
+    hash_table.insert({zero,1});
     if (*max_element(lineValues.begin(),lineValues.end()) == 0){
         return sum;
     }
