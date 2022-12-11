@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 	// print c_i's
 	for (int i = 0, last=0; i < _N; i++) {
-		last = last + randomValue(_M+1 - last);
+		last = _N;
 		cout << last << endl;
 	}
 	return 0;
