@@ -4,7 +4,6 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
-#include <map>
 using namespace std;
 
 unordered_map<string ,unsigned long int> hash_table;
@@ -16,14 +15,10 @@ int getValue(){
 
 }
 
-// Define a function that takes in a vector of integers as input
-// and returns an integer as the hash value
+
 string hashFunction(vector<int> vec) {
-    // Initialize the hash value to be zero
     string hash;
     
-    // Iterate over the vector and add each element to the hash value
-    // multiplied by a prime number
     int size = vec.size();
     for (int i = size-1; i >= 0; i--){
         hash += to_string(vec[i]);
@@ -74,30 +69,7 @@ vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado, i
     }
     return lineValues;
 }
-int verifica_fim(vector <int> lineValues, int lines, unordered_map<int,int> hash_table,int hash_value){
-    int count = 0;
-    for (int i = 0; i < lines; i++){
-        if (lineValues[i] == 0){
-            count++;
-        }
-        else{
-            break;
-        }
-    }
-    if (count == lines){
-        return 1;
-    }
-    if (hash_table.count(hash_value) > 0){  
-        return 1;   
-    }
-    return 0;
-}
-/*
-int calcula_combinacoes(vector <int> lineValues, int lines){
-    auto max = max_element(lineValues.begin(), lineValues.end());
-    return calcula_combinacoes(lineValues, lines, *max);
-}
-*/
+
 unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
     int quadrado = verifica_quadrado(lineValues, lines, indexMaxValue);
     unsigned long int sum = 0;
