@@ -1,20 +1,34 @@
 import os
 import time
+import sys
 from matplotlib import pyplot as plt
+
+projeto_name = "projeto.cpp"
 
 
 def main():
     time_data = []
     input_data = []
-    for i in range(1, 19):
+    nxn_data = []
+    os.system("rm -r tests")
+    os.system("mkdir tests")
+    os.system("g++ -std=c++11 -O3 -Wall " + projeto_name + " -lm -o main")
+    os.system("g++ -std=c++11 -O3 -Wall ladrilho_valido.cpp -lm -o gerador")
+    for i in range(1, 9):
+        os.system(
+            "./gerador " + str(i) + " " + str(i) + " > tests/test" + str(i) + ".txt"
+        )
         test = "tests/test" + str(i) + ".txt"
         shell_command = "./main < " + test
         start_time = time.time()
-        time_taken = os.system(shell_command)
+        stout = os.popen(shell_command).read()
         end_time = time.time()
         time_data.append(end_time - start_time)
-        input_data.append(i)
-    plt.plot(input_data, time_data, "bo")
+        print(stout)
+        input_data.append(stout)
+        nxn_data.append(i)
+    os.system("rm -r tests")
+    plt.plot(nxn_data, input_data, "--bo", label="line with marker")
     plt.ylabel("Time (in seconds)")
     plt.xlabel("Size of square")
     plt.show()
