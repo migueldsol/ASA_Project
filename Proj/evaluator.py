@@ -3,7 +3,7 @@ import time
 import sys
 from matplotlib import pyplot as plt
 
-projeto_name = "projeto.cpp"
+projeto_name = "projeto_2.cpp"
 
 
 def main():
@@ -29,8 +29,9 @@ def main():
         nxn_data.append(i)
     os.system("rm -r tests")
     plt.plot(nxn_data, input_data, "--bo", label="line with marker")
-    plt.ylabel("Time (in seconds)")
+    plt.ylabel("call of functions")
     plt.xlabel("Size of square")
+    plt.title("function complexity")
     plt.show()
 
 
