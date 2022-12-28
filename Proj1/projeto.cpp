@@ -7,6 +7,7 @@
 using namespace std;
 
 unordered_map<string ,unsigned long int> hash_table;
+unsigned long long counter = 0;
 
 int getValue(){
     int lines;
@@ -70,9 +71,10 @@ vector <int> retira_quadrado(vector <int> lineValues, int lines, int quadrado, i
     return lineValues;
 }
 
-unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
+unsigned long long calcula_combinacoes(vector<int> lineValues, int lines, int indexMaxValue){
+    counter ++;
     int quadrado = verifica_quadrado(lineValues, lines, indexMaxValue);
-    unsigned long int sum = 0;
+    unsigned long long sum = 0;
     string hash_value = hashFunction(lineValues);
     vector <int> newLineValues;
     for(int i = 1; i <= quadrado; i++){
@@ -89,10 +91,10 @@ unsigned long int calcula_combinacoes(vector<int> lineValues, int lines, int ind
     return sum;
 }
 
-unsigned long int gere_combinacoes(){
+unsigned long long gere_combinacoes(){
     int lines = getValue();
     int collums = getValue();
-    unsigned long int sum = 0;
+    unsigned long long sum = 0;
     vector<int> lineValues = getLineValues(lines,collums);
     string zero;
     for (int i = 0; i < lines; i++){
@@ -109,6 +111,7 @@ unsigned long int gere_combinacoes(){
 }
 
 int main(){
-    printf("%ld\n",gere_combinacoes());
+    gere_combinacoes();
+    printf("%llu\n",counter);
     return 0;
 }
