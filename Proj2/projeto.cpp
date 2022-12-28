@@ -7,8 +7,12 @@ using namespace std;
 
 #define INF 1e9
 
+//QUESTIONS pesos negativos?
+
+//QUESTIONS linked list e a melhor representação?
 unordered_map<int, unordered_map<int, int>> given_graph;
 unordered_map<int, unordered_map<int, int>> graph;    
+
 
 unordered_map<int, int> distances;
 unordered_map<int, int> predecessor;
@@ -32,6 +36,8 @@ int dijkstra(int start, int end) {
 
     /* Create "max queue" -> no need for max queue
      since we can just retrieve the max element of the set*/
+    
+    //QUESTIONS e preciso max queue? 
     
     set<int> unvisited;
     set<pair<int,int>> edgeVisited;
@@ -99,7 +105,7 @@ int apply_dijkstra_graph(){
     }
     return max_dijkstra;
 }
-/*This function runs through the connected graph and adds it to the unoredered_map graph*/
+/*This function runs through the connected graph and adds it's edges to the unoredered_map graph*/
 void dfs_separate(vector<bool> &visited, int vertex){
     for (auto& q : given_graph[vertex]){
         
@@ -116,7 +122,7 @@ void dfs_separate(vector<bool> &visited, int vertex){
 
 /*
 this function turns a disconnected graph into multiple connected graphs and
-sums the maximum value of 
+sums the maximum value of applying dijkstra to those connected graphs 
 */
 int separate_graphs(int v){
     vector<bool> visited(v, false);
