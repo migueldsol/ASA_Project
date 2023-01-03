@@ -22,11 +22,10 @@ int final_weight = 0;
 // Find the set that a particular vertex belongs to
 //TODO:Path compresion
 int find_set(int vertex) {
-  int num_parent = parent[vertex];
-  if ( num_parent != vertex){
-    return find_set(num_parent);
+  if ( parent[vertex] != vertex){
+    parent[vertex] = find_set(parent[vertex]);
   }
-  return num_parent;
+  return parent[vertex];
 }
 
 int get_rank(int vertex){
